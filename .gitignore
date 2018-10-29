@@ -1,0 +1,8 @@
+secrets.py
+__pycache__
+**/*.pyc
+.idea
+.kdev4
+*.kdev4
+log
+build
