@@ -6,3 +6,5 @@ __pycache__
 *.kdev4
 log
 build
+test.data
+test.info.npy
