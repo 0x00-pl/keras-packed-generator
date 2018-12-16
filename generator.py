@@ -5,9 +5,9 @@ import numpy as np
 import pack_npy
 
 
-class g:
-    def __init__(self, filename, infofilename):
-        self.up = pack_npy.unpacker(filename, np.load(infofilename))
+class Generator:
+    def __init__(self, filename, info_filename):
+        self.up = pack_npy.Unpacker(filename, np.load(info_filename))
 
     def __call__(self, batch_size=32, *args, **kwargs):
         while True:
@@ -19,9 +19,9 @@ class g:
                 inputs = []
                 outputs = []
                 for info in info_list:
-                    iarr, oarr = self.up.get_data(info)
-                    inputs.append(iarr)
-                    outputs.append(oarr)
+                    i_arr, o_arr = self.up.get_data(info)
+                    inputs.append(i_arr)
+                    outputs.append(o_arr)
                 yield np.array(inputs), np.array(outputs)
 
     def __len__(self):
