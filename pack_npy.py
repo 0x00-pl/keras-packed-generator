@@ -1,7 +1,7 @@
 import numpy as np
 
 
-class packer:
+class Packer:
     def __init__(self, output_file):
         self.of = open(output_file, 'wb')
         self.info = []
@@ -27,7 +27,7 @@ class packer:
         self.of.close()
 
 
-class unpacker:
+class Unpacker:
     def __init__(self, input_file, info):
         self.f = open(input_file, 'rb')
         self.info = info
@@ -49,21 +49,20 @@ class unpacker:
         output = oflatten.reshape(oshape)
         return input, output
 
-
     def close(self):
         self.f.close()
 
 
 def main():
-    pk = packer('test.data')
+    pk = Packer('test.data')
     for i in range(10000):
-        arr = np.arange(128*64).reshape(128, 64, 1).astype('int16')
+        arr = np.arange(128 * 64).reshape(128, 64, 1).astype('int16')
         pk.add_ndarray(arr, np.arange(400).astype('float'))
 
     pk.export_index('test.info')
     pk.close()
 
-    up = unpacker('test.data', np.load('test.info.npy'))
+    up = Unpacker('test.data', np.load('test.info.npy'))
     for i in range(10000):
         arr = up.get_data_from_idx(i)
 
