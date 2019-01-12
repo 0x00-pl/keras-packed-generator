@@ -40,7 +40,7 @@ class InputPartData:
             for info in info_list:
                 istart, ilen, idtype, ishape, ostart, olen, odtype, oshape = info
                 isize = np.dtype(idtype).itemsize
-                part_start = random.randrange(0, int(ilen/isize) - num_items_each_i_part)
+                part_start = random.randrange(0, int(ilen / isize) - num_items_each_i_part)
                 i_arr, o_arr = self.up.get_data_part(info, part_start, i_part_shape, isize)
                 inputs.append(i_arr)
                 outputs.append(o_arr)
