@@ -59,8 +59,8 @@ class Unpacker:
         istart, ilen, idtype, ishape, ostart, olen, odtype, oshape = info
         isize = isize or np.dtype(idtype).itemsize
         i_part_len_count = np.product(i_part_shape)
-        self.f.seek(istart+isize*i_part_start_count)
-        idata = self.f.read(isize*i_part_len_count)
+        self.f.seek(istart + isize * i_part_start_count)
+        idata = self.f.read(isize * i_part_len_count)
         iflatten = np.frombuffer(idata, idtype)
         input = iflatten.reshape(i_part_shape)
 
@@ -89,7 +89,7 @@ def main():
 
     up = Unpacker('test.data', np.load('test.info.npy'))
     for i in range(10000):
-        arr = up.get_data_part_from_idx(i, random.randrange(0, 128*64)-10, [10])
+        arr = up.get_data_part_from_idx(i, random.randrange(0, 128 * 64) - 10, [10])
 
 
 if __name__ == '__main__':
