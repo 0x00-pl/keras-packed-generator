@@ -32,10 +32,10 @@ class Packer:
 class Unpacker:
     def __init__(self, input_file, info):
         self.f = open(input_file, 'rb')
-        self.info = info
+        self.info_list = info
 
     def get_data_from_idx(self, idx):
-        info = self.info[idx]
+        info = self.info_list[idx]
         return self.get_data(info)
 
     def get_data(self, info):
@@ -52,7 +52,7 @@ class Unpacker:
         return input, output
 
     def get_data_part_from_idx(self, idx, i_part_start_count, i_part_shape, isize=None):
-        info = self.info[idx]
+        info = self.info_list[idx]
         return self.get_data_part(info, i_part_start_count, i_part_shape, isize)
 
     def get_data_part(self, info, i_part_start_count, i_part_shape, isize=None):
@@ -78,7 +78,7 @@ def main():
     pk = Packer('test.data')
     for i in range(10000):
         arr = np.arange(128 * 64).reshape(128, 64, 1).astype('int16')
-        pk.add_ndarray(arr, np.arange(400).astype('float'))
+        pk.add_ndarray(arr, np.arange(1).astype('int'))
 
     pk.export_index('test.info')
     pk.close()
