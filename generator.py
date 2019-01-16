@@ -11,10 +11,10 @@ class FullData:
 
     def __call__(self, batch_size=32, *args, **kwargs):
         while True:
-            random.shuffle(self.up.info)
+            random.shuffle(self.up.info_list)
             idx = 0
-            while idx < len(self.up.info):
-                info_list = self.up.info[idx: idx + batch_size]
+            while idx < len(self.up.info_list):
+                info_list = self.up.info_list[idx: idx + batch_size]
                 idx += batch_size
                 inputs = []
                 outputs = []
@@ -25,7 +25,7 @@ class FullData:
                 yield np.array(inputs), np.array(outputs)
 
     def __len__(self):
-        return len(self.up.info)
+        return len(self.up.info_list)
 
 
 class InputPartData:
@@ -36,7 +36,7 @@ class InputPartData:
         while True:
             inputs = []
             outputs = []
-            info_list = random.choices(self.up.info, k=batch_size)
+            info_list = random.choices(self.up.info_list, k=batch_size)
             for info in info_list:
                 istart, ilen, idtype, ishape, ostart, olen, odtype, oshape = info
                 isize = np.dtype(idtype).itemsize
@@ -47,4 +47,16 @@ class InputPartData:
             yield np.array(inputs), np.array(outputs)
 
     def __len__(self):
-        return len(self.up.info)
+        return len(self.up.info_list)
+
+
+def generator_middleware(generator, inputs_middleware=None, targets_middleware=None, sample_weights_middleware=None):
+    for datas in generator:
+        ret = list(datas)
+        if inputs_middleware:
+            ret[0] = inputs_middleware(datas[0])
+        if targets_middleware:
+            ret[1] = targets_middleware(datas[1])
+        if sample_weights_middleware:
+            ret[2] = sample_weights_middleware(datas[2])
+        yield ret
